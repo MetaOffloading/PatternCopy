@@ -49,6 +49,7 @@ import com.sam.webtasks.iotask1.IOtask1RunTrial;
 import com.sam.webtasks.iotask2.IOtask2Block;
 import com.sam.webtasks.iotask2.IOtask2BlockContext;
 import com.sam.webtasks.iotask2.IOtask2RunTrial;
+import com.sam.webtasks.patternCopy.PatternBlock;
 import com.sam.webtasks.perceptualTask.PerceptBlock;
 import com.sam.webtasks.timeBasedOffloading.TimeBlock;
 import com.sam.webtasks.iotask2.IOtask2InitialiseTrial;
@@ -66,10 +67,10 @@ public class SequenceHandler {
 			 * The code here defines the main sequence of events in the experiment *
 			 **********************************************************************/
 			case 1:
-				ClickPage.Run(Instructions.Get(0), "Next");
-				break;
-			case 2:
-				Finish.Run();
+				// initialise the block
+				PatternBlock.Init();
+				
+				PatternBlock.Run();
 				break;
 			}
 			break;
