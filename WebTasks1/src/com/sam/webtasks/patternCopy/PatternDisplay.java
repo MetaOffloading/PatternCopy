@@ -17,10 +17,12 @@ import com.ait.lienzo.shared.core.types.Color;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PatternDisplay {
 	//we can use this to check whether the display has been initialised, if not it needs to be done
@@ -38,17 +40,18 @@ public class PatternDisplay {
 	public static int nFilledSquares = 10; //how many filled squares?
 	public static int copyRows = 2;        //how many rows in the initial display of the copy squares?
 	public static int copyCols = 5;        //how many columjns in the initial display of the copy squares?
-	public static final int panelSize = (3 * gridPixels * gridSize) + (2 * gridLineWidth);
+	public static final int panelSize_h = (3 * gridPixels * gridSize) + (2 * gridLineWidth);
+	public static final int panelSize_v = 2 * ((gridPixels * gridSize) + (2 * gridLineWidth));
 	
 	/*------------initialise Lienzo objects------------*/
-	public static final LienzoPanel panel = new LienzoPanel(panelSize, panelSize);
+	public static final LienzoPanel panel = new LienzoPanel(panelSize_h, panelSize_v);
 	
 	public static final Layer gridLayer = new Layer();
 	public static final Layer templateLayer = new Layer();
 	public static final Layer copyLayer = new Layer();
 
 	//we put the lienzo panel into the lienzoWrapper, then we put the lienzoWrapper into another wrapper to center it
-	public static final HorizontalPanel lienzoWrapper = new HorizontalPanel();
+	public static final VerticalPanel lienzoWrapper = new VerticalPanel();
 	public static final HorizontalPanel wrapper = new HorizontalPanel();
 
 	public static Line[] leftHorizontalLines = new Line[gridSize+1];
@@ -77,15 +80,7 @@ public class PatternDisplay {
     /*------------set up Lienzo objects------------*/
 	public static void Init() {
 		isInitialised = true;
-		
-		wrapper.setWidth(Window.getClientWidth() + "px");
-		wrapper.setHeight(Window.getClientHeight() + "px");
-		wrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		wrapper.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		
-		lienzoWrapper.add(panel);
-        wrapper.add(lienzoWrapper);
-		
+
 		//gridlines
         final int rightOffset = 2*gridPixels*gridSize;
         
@@ -133,12 +128,50 @@ public class PatternDisplay {
             }
         }
         
+      
+        
+        //add the side switch button
+        int rectX=220,rectY=50;
+        
+        final Group sideSwitchGroup = new Group();
+        
+        final Rectangle sideSwitchRectangle = new Rectangle(rectX,rectY);
+        sideSwitchRectangle.setFillColor(ColorName.CORNFLOWERBLUE).setFillAlpha(0.3).setCornerRadius(10);
+        final Text sideSwitchText = new Text("Show Copy", "Verdana, sans-serif", null, 20);
+        sideSwitchText.setFillColor(ColorName.BLACK).setTextAlign(TextAlign.CENTER).setTextBaseLine(TextBaseLine.MIDDLE);
+        
+        sideSwitchGroup.add(sideSwitchText);
+        sideSwitchGroup.add(sideSwitchRectangle);
+        sideSwitchText.setX(rectX/2).setY(rectY/2);
+        
+        gridLayer.add(sideSwitchGroup);
+        sideSwitchGroup.setX(1.5*gridPixels*gridSize-rectX/2);
+        sideSwitchGroup.setY(0.333*gridPixels*gridSize);
+        
+        sideSwitchRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
+        	public void onNodeMouseClick (NodeMouseClickEvent event) {
+        		if (visiblePanel==TEMPLATE) {
+        			copyLayer.setVisible(true);
+        			templateLayer.setVisible(false);
+        			sideSwitchText.setText("Show Template");
+        			copyLayer.draw();
+        			gridLayer.draw();
+        			visiblePanel=COPY;
+        		} else {
+        			templateLayer.setVisible(true);
+        			copyLayer.setVisible(false);
+        			sideSwitchText.setText("Show Copy");
+        			templateLayer.draw();
+        			gridLayer.draw();
+        			visiblePanel=TEMPLATE;
+        		}
+        	}
+        });  
+        
         //add the 'finished' button
         final Group finishGroup = new Group();
       
         finishText.setFillColor(ColorName.BLACK).setAlpha(0.5).setTextAlign(TextAlign.CENTER).setTextBaseLine(TextBaseLine.MIDDLE);
-        
-        int rectX=180,rectY=50;
         
         final Rectangle finishRectangle = new Rectangle(rectX,rectY);
         finishRectangle.setFillColor(ColorName.GREENYELLOW).setFillAlpha(0.3).setCornerRadius(10);
@@ -166,6 +199,24 @@ public class PatternDisplay {
         			
         			if (allCorrect) {
         				Window.alert("Correct");
+        				
+        				gridLayer.setVisible(false);
+        				templateLayer.setVisible(false);
+        				copyLayer.setVisible(false);
+        					
+        				//reset the button text
+        				sideSwitchText.setText("Show Copy");
+        				
+        				//reset the initial copy squares
+        				for (int i=0; i<nFilledSquares; i++) {
+        					allCopySquares.set(i, i);
+        				}
+        				
+        				new Timer() {
+        					public void run() {
+        						PatternTrial.Run();
+        					}
+        				}.schedule(500);
         			} else {
         				Window.alert("Incorrect");
         			}
@@ -174,38 +225,6 @@ public class PatternDisplay {
         		}
         	}
         });
-        
-        //add the side switch button
-        final Group sideSwitchGroup = new Group();
-        
-        final Rectangle sideSwitchRectangle = new Rectangle(rectX,rectY);
-        sideSwitchRectangle.setFillColor(ColorName.CORNFLOWERBLUE).setFillAlpha(0.3).setCornerRadius(10);
-        final Text sideSwitchText = new Text("Switch Side", "Verdana, sans-serif", null, 20);
-        sideSwitchText.setFillColor(ColorName.BLACK).setTextAlign(TextAlign.CENTER).setTextBaseLine(TextBaseLine.MIDDLE);
-        
-        sideSwitchGroup.add(sideSwitchText);
-        sideSwitchGroup.add(sideSwitchRectangle);
-        sideSwitchText.setX(rectX/2).setY(rectY/2);
-        
-        gridLayer.add(sideSwitchGroup);
-        sideSwitchGroup.setX(1.5*gridPixels*gridSize-rectX/2);
-        sideSwitchGroup.setY(0.333*gridPixels*gridSize);
-        
-        sideSwitchRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
-        	public void onNodeMouseClick (NodeMouseClickEvent event) {
-        		if (visiblePanel==TEMPLATE) {
-        			copyLayer.setVisible(true);
-        			templateLayer.setVisible(false);
-        			copyLayer.draw();
-        			visiblePanel=COPY;
-        		} else {
-        			templateLayer.setVisible(true);
-        			copyLayer.setVisible(false);
-        			templateLayer.draw();
-        			visiblePanel=TEMPLATE;
-        		}
-        	}
-        });  	        
 
         //now set up the copy rectangles. their colours and locations are set up in the PatternTrial code
         for (int i = 0; i < nFilledSquares; i++) {
@@ -271,6 +290,19 @@ public class PatternDisplay {
         //also a list of all the copy squares. we use this to initialise them into random positions at beginning of trial, and verify response
         for (int i=0; i<nFilledSquares; i++) {
         	allCopySquares.add(i);
-        }    
+        }  
+        
+        //set up the display for the first trial
+        PatternDisplay.panel.add(PatternDisplay.gridLayer);
+		PatternDisplay.panel.add(PatternDisplay.templateLayer);
+		PatternDisplay.panel.add(PatternDisplay.copyLayer);
+		
+		wrapper.setWidth(Window.getClientWidth() + "px");
+		wrapper.setHeight(Window.getClientHeight() + "px");
+		wrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		wrapper.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		
+		lienzoWrapper.add(panel);
+        wrapper.add(lienzoWrapper);
 	}
 }
