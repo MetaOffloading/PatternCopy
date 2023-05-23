@@ -25,6 +25,11 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class PatternDisplay {
 	//we can use this to check whether the display has been initialised, if not it needs to be done
 	public static boolean isInitialised = false;
+	
+	//which panel is visible?
+	public static int TEMPLATE=0;
+	public static int COPY=1;
+	public static int visiblePanel=TEMPLATE;
 		
 	/*------------display parameters------------*/	
 	public static int gridSize = 5; 	  //how many squares?
@@ -133,7 +138,7 @@ public class PatternDisplay {
       
         finishText.setFillColor(ColorName.BLACK).setAlpha(0.5).setTextAlign(TextAlign.CENTER).setTextBaseLine(TextBaseLine.MIDDLE);
         
-        int rectX=130,rectY=50;
+        int rectX=180,rectY=50;
         
         final Rectangle finishRectangle = new Rectangle(rectX,rectY);
         finishRectangle.setFillColor(ColorName.GREENYELLOW).setFillAlpha(0.3).setCornerRadius(10);
@@ -164,11 +169,43 @@ public class PatternDisplay {
         			} else {
         				Window.alert("Incorrect");
         			}
+        		} else {
+        			Window.alert("You need to move all of the colour blocks into the grid first.");
         		}
         	}
         });
         
-        //add the display switch button
+        //add the side switch button
+        final Group sideSwitchGroup = new Group();
+        
+        final Rectangle sideSwitchRectangle = new Rectangle(rectX,rectY);
+        sideSwitchRectangle.setFillColor(ColorName.CORNFLOWERBLUE).setFillAlpha(0.3).setCornerRadius(10);
+        final Text sideSwitchText = new Text("Switch Side", "Verdana, sans-serif", null, 20);
+        sideSwitchText.setFillColor(ColorName.BLACK).setTextAlign(TextAlign.CENTER).setTextBaseLine(TextBaseLine.MIDDLE);
+        
+        sideSwitchGroup.add(sideSwitchText);
+        sideSwitchGroup.add(sideSwitchRectangle);
+        sideSwitchText.setX(rectX/2).setY(rectY/2);
+        
+        gridLayer.add(sideSwitchGroup);
+        sideSwitchGroup.setX(1.5*gridPixels*gridSize-rectX/2);
+        sideSwitchGroup.setY(0.333*gridPixels*gridSize);
+        
+        sideSwitchRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
+        	public void onNodeMouseClick (NodeMouseClickEvent event) {
+        		if (visiblePanel==TEMPLATE) {
+        			copyLayer.setVisible(true);
+        			templateLayer.setVisible(false);
+        			copyLayer.draw();
+        			visiblePanel=COPY;
+        		} else {
+        			templateLayer.setVisible(true);
+        			copyLayer.setVisible(false);
+        			templateLayer.draw();
+        			visiblePanel=TEMPLATE;
+        		}
+        	}
+        });  	        
 
         //now set up the copy rectangles. their colours and locations are set up in the PatternTrial code
         for (int i = 0; i < nFilledSquares; i++) {
@@ -234,8 +271,6 @@ public class PatternDisplay {
         //also a list of all the copy squares. we use this to initialise them into random positions at beginning of trial, and verify response
         for (int i=0; i<nFilledSquares; i++) {
         	allCopySquares.add(i);
-        }
-        
-        
+        }    
 	}
 }

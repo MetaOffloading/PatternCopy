@@ -11,6 +11,9 @@ public class PatternTrial {
 		PatternDisplay.panel.add(PatternDisplay.templateLayer);
 		PatternDisplay.panel.add(PatternDisplay.copyLayer);
 		
+		PatternDisplay.templateLayer.setVisible(true);
+		PatternDisplay.copyLayer.setVisible(false);
+		
 		//randomise the full set of squares, to pick a pattern
 		for (int i = 0; i < PatternDisplay.allSquares.size(); i++) {
 			Collections.swap(PatternDisplay.allSquares, i, Random.nextInt(PatternDisplay.allSquares.size()));
@@ -26,7 +29,7 @@ public class PatternTrial {
 		
 		//now initialise the locations for the copy squares
 		PatternDisplay.allSquaresPlaced = false;
-		PatternDisplay.finishText.setAlpha(0.3);
+		PatternDisplay.finishText.setAlpha(0.5);
 		
 		//fist randomise the list of all copy squares
 		for (int i = 0; i < PatternDisplay.nFilledSquares; i++) {
