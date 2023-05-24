@@ -67,9 +67,20 @@ public class SequenceHandler {
 			 * The code here defines the main sequence of events in the experiment *
 			 **********************************************************************/
 			case 1:
+				ClickPage.Run("Practice block", "Next");
+				break;
+			case 2:
 				// initialise the block
 				PatternBlock.Init();
-				
+				PatternBlock.practiceMode=true;
+				PatternBlock.Run();
+				break;
+			case 3:
+				ClickPage.Run("Exp block",  "Next");
+				break;
+			case 4:
+				PatternBlock.Init();
+				PatternBlock.nTrials=2;
 				PatternBlock.Run();
 				break;
 			}

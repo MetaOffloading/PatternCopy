@@ -10,7 +10,8 @@ public class PatternTrial {
 	public static void Run() {	
 		PatternDisplay.gridLayer.setVisible(true);
 		PatternDisplay.templateLayer.setVisible(true);
-		PatternDisplay.copyLayer.setVisible(false);
+		PatternDisplay.copyLayer.setVisible(false || PatternBlock.practiceMode);
+		PatternDisplay.sideSwitchGroup.setVisible(!PatternBlock.practiceMode);
 		PatternDisplay.visiblePanel=PatternDisplay.TEMPLATE;
 		
 		//randomise the full set of squares, to pick a pattern
@@ -47,8 +48,7 @@ public class PatternTrial {
 
                 //place the copy rectangles underneath the grid
                 yPixel += 1.1 * PatternDisplay.gridPixels * PatternDisplay.gridSize;
-                //Window.alert("debug1");
-                //Window.alert("p: " + PatternDisplay.allCopySquares.get(rectangleIndex));
+
                 PatternDisplay.copyRectangles[PatternDisplay.allCopySquares.get(rectangleIndex++)].setX(xPixel).setY(yPixel);
             }
         }

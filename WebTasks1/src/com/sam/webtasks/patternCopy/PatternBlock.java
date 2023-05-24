@@ -8,7 +8,7 @@ import com.sam.webtasks.perceptualTask.PerceptTrial;
 
 public class PatternBlock {
 	//how many trials?
-	public static int nTrials;
+	public static int nTrials=1;
 
 	//which trial number is this?
 	public static int trial;
@@ -22,10 +22,16 @@ public class PatternBlock {
 	//timestamp of beginning of block
 	public static Date blockStart;
 	
+	//in practice mode, you can see both the template and copy together
+	public static Boolean practiceMode = false;
+	
 	/*-----------initialise / reset all block settings-----------*/
 	public static void Init() {
 		if (PatternDisplay.isInitialised == false) {
 			PatternDisplay.Init();
+		} else {
+			trial=0;
+			practiceMode = false;
 		}
 	}
 	

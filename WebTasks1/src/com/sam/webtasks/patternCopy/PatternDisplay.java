@@ -22,7 +22,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sam.webtasks.client.SequenceHandler;
 
 public class PatternDisplay {
 	//we can use this to check whether the display has been initialised, if not it needs to be done
@@ -37,9 +39,9 @@ public class PatternDisplay {
 	public static int gridSize = 5; 	  //how many squares?
 	public static int gridPixels = 60;    //size of each square in pixels
 	public static int gridLineWidth = 5;
-	public static int nFilledSquares = 10; //how many filled squares?
 	public static int copyRows = 2;        //how many rows in the initial display of the copy squares?
-	public static int copyCols = 5;        //how many columjns in the initial display of the copy squares?
+	public static int copyCols = 5;        //how many columns in the initial display of the copy squares?
+	public static int nFilledSquares = copyRows * copyCols; //how many filled squares in total?
 	public static final int panelSize_h = (3 * gridPixels * gridSize) + (2 * gridLineWidth);
 	public static final int panelSize_v = 2 * ((gridPixels * gridSize) + (2 * gridLineWidth));
 	
@@ -75,7 +77,9 @@ public class PatternDisplay {
     public static Boolean[] copySquarePlaced = new Boolean[nFilledSquares];
     public static Boolean allSquaresPlaced = false;
     
+    //objects that need to be accessed outside the class
     public static final Text finishText = new Text("Finished", "Verdana, sans-serif", null, 20);
+    public static final Group sideSwitchGroup = new Group();
 
     /*------------set up Lienzo objects------------*/
 	public static void Init() {
@@ -132,9 +136,7 @@ public class PatternDisplay {
         
         //add the side switch button
         int rectX=220,rectY=50;
-        
-        final Group sideSwitchGroup = new Group();
-        
+
         final Rectangle sideSwitchRectangle = new Rectangle(rectX,rectY);
         sideSwitchRectangle.setFillColor(ColorName.CORNFLOWERBLUE).setFillAlpha(0.3).setCornerRadius(10);
         final Text sideSwitchText = new Text("Show Copy", "Verdana, sans-serif", null, 20);
@@ -145,6 +147,7 @@ public class PatternDisplay {
         sideSwitchText.setX(rectX/2).setY(rectY/2);
         
         gridLayer.add(sideSwitchGroup);
+        
         sideSwitchGroup.setX(1.5*gridPixels*gridSize-rectX/2);
         sideSwitchGroup.setY(0.333*gridPixels*gridSize);
         
@@ -214,7 +217,12 @@ public class PatternDisplay {
         				
         				new Timer() {
         					public void run() {
-        						PatternTrial.Run();
+        						if (++PatternBlock.trial == PatternBlock.nTrials) {
+        							RootPanel.get().remove(PatternDisplay.wrapper);
+        							SequenceHandler.Next();
+        						} else {
+        							PatternTrial.Run();
+        						}
         					}
         				}.schedule(500);
         			} else {
