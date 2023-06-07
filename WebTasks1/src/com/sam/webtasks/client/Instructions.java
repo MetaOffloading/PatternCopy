@@ -10,7 +10,53 @@ public class Instructions {
 		 
 		switch(index) {
 		case 0:
-			i="Here are some instructions";
+			i = "In this experiment you will have a simple task to do.<br><br>"
+					+ "You will see several yellow circles inside a box. Inside each circle will be a number. <br><br>"
+					+ "You can move them around with your finger or your mouse. Your task is to drag them to the bottom of the box in sequence.<br><br>"
+					+ " Please start by dragging 1 all the way to the bottom. This will make it disappear. <br><br>"
+					+ "Then drag 2 to the bottom, then 3, and so on.";
+			break;
+
+		case 1:
+			i="Now you will continue the task with more circles on the screen. ";
+			break;
+			
+		case 2:
+			i="Now you will continue the same task, but sometimes there will be something else to do. <br><br>"
+					+ "As well as dragging each circle in turn to the "
+					+ "bottom of the screen, you will be instructed to drag one or more "
+					+ "of the circles to another part of the box. For instance, you might be told that you should drag number 5 "
+					+ "to the left of the box instead of the bottom.<br><br>"
+					+ "You will still be able to drag any circle to the bottom of the box, but you should try to "
+					+ "remember to drag these special circles to the instructed location. ";
+			break;
+
+		case 3:
+			i="Now you will do the task again, but this time there will be three special circles to remember.";
+			break;
+			
+		case 4:
+			i="Now you will continue with the same task, but sometimes you will be interrupted by "
+					+"an arithmetic question. You will need to answer the question in order to continue the other task.";
+			break;
+			
+		case 5:
+			i="Some people find it helpful to drag "
+					+ "the special circles near to the edge of the box to help them remember.<br><br> "
+					+ "For example, if you had to remember to drag 5 to the left of the box, "
+					+ "you could drag it near to there at the beginning, before you drag the 1. "
+					+ "Then when you eventually got to 5, its location would remind you "
+					+ "what to do. You should feel free to use this strategy if you like, but "
+					+ "it's up to you.<br><br> "
+					+ "Click below to continue.";
+			break;
+			
+		case 6:
+			i = "Now the task will start for real.<br><br>"
+					+ "You can choose whether to use the strategy of placing the special circles "
+					+ "at the edge of the box as reminders or just use your own memory without setting any reminders.<br><br>"
+					+ "You should feel free to do the task however you prefer. It's completely up to you.<br><br> "
+					+ "Please click below to continue. ";
 			break;
 		}
 

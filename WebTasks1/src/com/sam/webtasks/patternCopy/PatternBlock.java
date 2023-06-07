@@ -14,10 +14,13 @@ public class PatternBlock {
 	public static int trial;
 		
 	//which block number is this?
-	public static int block;
+	public static int block=0;
 	
 	//how many correct responses so far?
 	public static int nCorrect;
+	
+	//was the last response correct or incorrect?
+	public static Boolean lastRespCorrect;
 	
 	//timestamp of beginning of block
 	public static Date blockStart;
@@ -27,12 +30,13 @@ public class PatternBlock {
 	
 	/*-----------initialise / reset all block settings-----------*/
 	public static void Init() {
-		if (PatternDisplay.isInitialised == false) {
+		if (!PatternDisplay.isInitialised) {
 			PatternDisplay.Init();
-		} else {
-			trial=0;
-			practiceMode = false;
 		}
+		
+		trial=0;
+		nCorrect=0;
+		practiceMode = false;
 	}
 	
 	/*-----------run a block-----------*/

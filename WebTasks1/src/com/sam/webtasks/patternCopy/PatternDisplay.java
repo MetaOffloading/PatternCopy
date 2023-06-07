@@ -189,45 +189,46 @@ public class PatternDisplay {
         
         finishRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
         	public void onNodeMouseClick (NodeMouseClickEvent event) {
-        		if (allSquaresPlaced) {
+        		//if (allSquaresPlaced) {
+        		if (true) {
         			//check if correct
         			Boolean allCorrect=true;
         			
         			for (int i=0; i<nFilledSquares; i++) {
-        				//Window.alert("allsquare: " + allSquares.get(i) + ", copysquare: " + allCopySquares.get(i));
         				if (allCopySquares.get(i) != allSquares.get(i)) {
         					allCorrect=false;	
               			} 
         			}
         			
         			if (allCorrect) {
-        				Window.alert("Correct");
-        				
-        				gridLayer.setVisible(false);
-        				templateLayer.setVisible(false);
-        				copyLayer.setVisible(false);
-        					
-        				//reset the button text
-        				sideSwitchText.setText("Show Copy");
-        				
-        				//reset the initial copy squares
-        				for (int i=0; i<nFilledSquares; i++) {
-        					allCopySquares.set(i, i);
-        				}
-        				
-        				new Timer() {
-        					public void run() {
-        						if (++PatternBlock.trial == PatternBlock.nTrials) {
-        							RootPanel.get().remove(PatternDisplay.wrapper);
-        							SequenceHandler.Next();
-        						} else {
-        							PatternTrial.Run();
-        						}
-        					}
-        				}.schedule(500);
-        			} else {
-        				Window.alert("Incorrect");
+        				PatternBlock.nCorrect++;
+        				PatternBlock.lastRespCorrect=true;
+        			}  else {
+        				PatternBlock.lastRespCorrect=false;
         			}
+        					
+        			gridLayer.setVisible(false);
+        			templateLayer.setVisible(false);
+        			copyLayer.setVisible(false);
+        					
+        			//reset the button text
+        			sideSwitchText.setText("Show Copy");
+        				
+        			//reset the initial copy squares
+        			for (int i=0; i<nFilledSquares; i++) {
+        				allCopySquares.set(i, i);
+        			}
+        				
+        			new Timer() {
+        				public void run() {
+        					if (++PatternBlock.trial == PatternBlock.nTrials) {
+        						RootPanel.get().remove(PatternDisplay.wrapper);
+        						SequenceHandler.Next();
+        					} else {
+        						PatternTrial.Run();
+        					}
+        				}
+        			}.schedule(500);		 
         		} else {
         			Window.alert("You need to move all of the colour blocks into the grid first.");
         		}

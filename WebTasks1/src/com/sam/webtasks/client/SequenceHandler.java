@@ -67,7 +67,173 @@ public class SequenceHandler {
 			 * The code here defines the main sequence of events in the experiment *
 			 **********************************************************************/
 			case 1:
-				ClickPage.Run("Practice block", "Next");
+				ClickPage.Run("Thank you for taking part. This experiment is divided into two halves.<br><br>"
+						+ "Click below to start the first part of the experiment.", "Next");
+				break;
+			case 2:
+				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.INTENTION_OFFLOADING) {
+					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
+					SequenceHandler.Next();
+				} else {
+					SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
+					SequenceHandler.Next();
+				}
+				break;
+			case 3:
+				ClickPage.Run("Thank you, you have now finished the first half of the experiment.<br><br>"
+						+ "Click below to continue.", "Next");
+				break;
+			case 4:
+				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.PATTERN_COPY) {
+					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
+					SequenceHandler.Next();
+				} else {
+					SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
+					SequenceHandler.Next();
+				}
+				break;
+			case 5:
+				ClickPage.Run("You have now completed the experiment, thank you.", "nobutton");
+				break;
+			}
+			break;
+
+		//here we specify the intention offloading subloop
+		case 4:
+			switch (sequencePosition.get(4)) {
+			case 1:
+				ClickPage.Run(Instructions.Get(0), "Next");
+				break;
+			case 2:
+				//practice 1: 6 circles, no targets
+				IOtask1Block block1 = new IOtask1Block();
+				block1.blockNum = 1;
+				block1.nCircles = 6;
+				block1.nTrials = 1;
+				block1.nTargets = 0;
+				block1.askArithmetic = false;
+				block1.offloadCondition = Names.REMINDERS_NOTALLOWED;		
+				block1.Run();
+				break;
+			case 3:
+				ClickPage.Run(Instructions.Get(1), "Next");
+				break;
+			case 4:
+				//practice 2: 10 circles, no targets
+				IOtask1Block block2 = new IOtask1Block();
+				block2.blockNum = 2;
+				block2.nTrials = 1;
+				block2.nTargets = 0;
+				block2.askArithmetic = false;
+				block2.offloadCondition = Names.REMINDERS_NOTALLOWED;		
+				block2.Run();
+				break;
+			case 5:
+				ClickPage.Run(Instructions.Get(2), "Next");
+				break;
+			case 6:
+				//practice 3: 10 circles, 1 target
+				IOtask1Block block3 = new IOtask1Block();
+				block3.blockNum = 3;
+				block3.nTrials = 1;
+				block3.nTargets = 1;
+				block3.askArithmetic = false;
+				block3.offloadCondition = Names.REMINDERS_NOTALLOWED;		
+				block3.Run();				
+				break;
+			case 7:
+				ClickPage.Run(Instructions.Get(3), "Next");
+				break;
+			case 8:
+				//practice 4: 10 circles, 3 targets
+				IOtask1Block block4 = new IOtask1Block();
+				block4.blockNum = 4;
+				block4.nTrials = 1;
+				block4.nTargets = 3;
+				block4.askArithmetic = false;
+				block4.offloadCondition = Names.REMINDERS_NOTALLOWED;		
+				block4.Run();
+				break;		
+			case 9:
+				ClickPage.Run(Instructions.Get(4), "Next");
+				break;
+			case 10:
+				//practice 5: 10 circles, 3 targets, interruption
+				IOtask1Block block5 = new IOtask1Block();
+				block5.blockNum = 5;
+				block5.nTrials = 1;
+				block5.nTargets = 3;
+				block5.askArithmetic = true;
+				block5.offloadCondition = Names.REMINDERS_NOTALLOWED;		
+				block5.Run();
+				break;
+			case 11:
+				// Metacognitive Judgement
+				Slider.Run("Now that you have had some practice, we would like you to tell us "
+						+ "how accurately you can perform the task, when it is the same as the version you "
+						+ "just practiced with the arithmetic question. Please use the scale below to indicate what percentage "
+						+ "of the special circles you can correctly remember to drag to the instructed side of the square, on average. "
+						+ "100% would mean that you always get every single one correct. 0% would mean that you can "
+						+ "never get any of them correct. ", "Never", "Always");
+				break;
+			case 12:
+				//save the selected slider value to the database
+				PHP.logData("IOprediction",  "" + Slider.getSliderValue(), true);
+				break;
+			case 13:
+				ClickPage.Run(Instructions.Get(5), "Next");
+				break;
+			case 14:
+				//practice 6: 10 circles, 3 targets, interruption, offloading allowed
+				IOtask1Block block6 = new IOtask1Block();
+				block6.blockNum = 6;
+				block6.nTrials = 1;
+				block6.nTargets = 3;
+				block6.askArithmetic = true;
+				block6.offloadCondition = Names.REMINDERS_OPTIONAL;		
+				block6.Run();
+				break;
+			case 15:
+				ClickPage.Run(Instructions.Get(6), "Next");
+				break;
+			case 16:
+				//practice 6: 10 circles, 3 targets, interruption, offloading allowed
+				IOtask1Block block7 = new IOtask1Block();
+				block7.blockNum = 7;
+				block7.nTrials = 10;
+				block7.nTargets = 3;
+				block7.askArithmetic = true;
+				block7.offloadCondition = Names.REMINDERS_OPTIONAL;		
+				block7.Run();
+				break;
+			case 17:
+				Slider.Run("Thank you. You have now finished this task. We would now like you to estimate how often you "
+						+ "used the strategy of placing circles at the edge of the box at the beginning of the "
+						+ "trial, as reminders. 0% "
+						+ "would mean that you never used this strategy. 100% would mean that you used this strategy "
+						+ "for all of the special circles", "Never", "Always");
+				break;
+			case 18:
+				PHP.logData("IOpostdiction",  "" + Slider.getSliderValue(), true);
+				break;
+			case 19:
+				SequenceHandler.SetLoop(0, false); // switch to main loop
+				SequenceHandler.Next(); // start the loop
+			}
+			break;
+
+		//here we specify the pattern copy subloop
+		case 5:
+			switch (sequencePosition.get(5)) {
+			case 1:
+				ClickPage.Run("In this part of the experiment you will do a pattern copying task.<br><br>"
+						+ "On the left you will see a grid with some segments filled with different colours. "
+						+ "This is called the template grid.<br><br>"
+						+ "On the right will be an "
+						+ "empty grid with some colour blocks below. This is called the copy grid.<br><br>"
+						+ "Please use your mouse to drag the colour blocks "
+						+ "into the right-hand grid so that it matches the one on the left.<br><br>"
+						+ "When you have done this, please click the Finished button.", "Next");
 				break;
 			case 2:
 				// initialise the block
@@ -76,19 +242,67 @@ public class SequenceHandler {
 				PatternBlock.Run();
 				break;
 			case 3:
-				ClickPage.Run("Exp block",  "Next");
+				if (PatternBlock.lastRespCorrect) {
+					ClickPage.Run("That's correct, well done.<br><br>"
+							+ "Next you will do the same task again, but you will no longer be able to see both the "
+							+ "template grid and the copy grid at the same time. You will only see one or the other.<br><br>"
+							+ "When you are looking at the template grid, click Show Copy to look at the copy grid. "
+							+ "When you are looking at the copy grid, click Show Template to look at the template grid. "
+							+ "You can switch back and forth between the two grids as many times as you like while you copy the "
+							+ "pattern, it is totally up to you how many times to switch.<br><br>"
+							+ "When you have finished copying the pattern, click Finished as you did before.",  "Next");
+				} else {
+					SequenceHandler.SetPosition(SequenceHandler.GetPosition()-2);
+					ClickPage.Run("You did not perfectly copy the grid. Please try again.", "Next");
+				}
+
 				break;
 			case 4:
 				PatternBlock.Init();
-				PatternBlock.nTrials=2;
 				PatternBlock.Run();
 				break;
+			case 5:
+				if (PatternBlock.lastRespCorrect) {
+					Slider.Run("That's correct, well done.<br><br>"
+							+ "Now that you have had some practice, we would like you to tell us "
+							+ "how accurately you copy the patterns. Please use the scale below to indicate what percentage "
+							+ "of the patterns you will copy accurately."
+							+ "100% would mean that you always get every single one correct. 0% would mean that you make "
+							+ "a mistake every time. ", "None correct", "All correct");
+				} else {
+					SequenceHandler.SetPosition(SequenceHandler.GetPosition()-2);
+					ClickPage.Run("You did not perfectly copy the grid. Please try again.", "Next");
+				}
+
+				break;
+			case 6:
+				PHP.logData("PCprediction",  "" + Slider.getSliderValue(), true);
+				break;
+			case 7:
+				ClickPage.Run("Now the task will begin for real. Click below to continue.", "Next");
+				break;
+			case 8:
+				PatternBlock.Init();
+				PatternBlock.block=1;
+				PatternBlock.nTrials=10;
+				PatternBlock.Run();
+				break;
+			case 9:
+				String resp = Window.prompt("Thank you. Now that you have finished this task, we would like you to "
+						+ "estimate the average number of times you clicked on the button to switch "
+						+ "between the two grids, when you copied a pattern. Please answer with the average number of times "
+						+ "you clicked on this button each time you copied one pattern.", "");
+				PHP.logData("PCpostdiction",  "" + resp, true);
+				break;			
+			case 10:
+				SequenceHandler.SetLoop(0, false); // switch to main loop
+				SequenceHandler.Next(); // start the loop
 			}
 			break;
 
-		/********************************************/
-		/* no need to edit the code below this line */
-		/********************************************/
+			/********************************************/
+			/* no need to edit the code below this line */
+			/********************************************/
 
 		case 1: // initialisation loop
 			switch (sequencePosition.get(1)) {
@@ -159,7 +373,7 @@ public class SequenceHandler {
 				IOtask1Block block = IOtask1BlockContext.getContext();
 
 				if (block.currentTrial == block.nTrials) {
-					SequenceHandler.SetLoop(0, false);
+					SequenceHandler.SetLoop(4, false);
 				}
 
 				SequenceHandler.Next();
@@ -189,29 +403,29 @@ public class SequenceHandler {
 				// first check if the block has ended. If so return control to the main sequence
 				// handler
 				IOtask2Block block = IOtask2BlockContext.getContext();
-				
+
 				if (block.currentTrial == block.nTrials) {
 					SequenceHandler.SetLoop(0,  false);
 				}
-				
+
 				SequenceHandler.Next();
 				break;
 			case 2:
 				IOtask2InitialiseTrial.Run();
 				break;
 			case 3:;
-				//present the pre-trial choice if appropriate
-				if (IOtask2BlockContext.currentTargetValue() > -1) {
-					IOtask2PreTrial.Run();
-				} else { //otherwise just skip to the start of the block
-					if ((IOtask2BlockContext.getTrialNum() > 0)&&(IOtask2BlockContext.countdownTimer())) {
-						//if we're past the first trial and there's a timer, click to begin
-						ClickPage.Run("Ready?", "Continue");
-					} else {
-						SequenceHandler.Next();
-					}
+			//present the pre-trial choice if appropriate
+			if (IOtask2BlockContext.currentTargetValue() > -1) {
+				IOtask2PreTrial.Run();
+			} else { //otherwise just skip to the start of the block
+				if ((IOtask2BlockContext.getTrialNum() > 0)&&(IOtask2BlockContext.countdownTimer())) {
+					//if we're past the first trial and there's a timer, click to begin
+					ClickPage.Run("Ready?", "Continue");
+				} else {
+					SequenceHandler.Next();
 				}
-				break;
+			}
+			break;
 			case 4:
 				if (IOtask2BlockContext.getNTrials() == -1) { //if nTrials has been set to -1, we quit before running
 					SequenceHandler.SetLoop(0,  false);
@@ -232,7 +446,7 @@ public class SequenceHandler {
 			}
 		}
 	}
-	
+
 	private static ArrayList<Integer> sequencePosition = new ArrayList<Integer>();
 	private static int whichLoop;
 
@@ -248,7 +462,7 @@ public class SequenceHandler {
 			sequencePosition.set(whichLoop, 0);
 		}
 	}
-	
+
 	// get current loop
 	public static int GetLoop() {
 		return (whichLoop);
@@ -263,7 +477,7 @@ public class SequenceHandler {
 	public static int GetPosition() {
 		return (sequencePosition.get(whichLoop));
 	}
-	
+
 	// get current position from particular loop
 	public static int GetPosition(int nLoop) {
 		return (sequencePosition.get(nLoop));
