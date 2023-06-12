@@ -225,7 +225,9 @@ public class PatternDisplay {
         				
         			new Timer() {
         				public void run() {
-        					PatternBlock.trial++;
+        					if(++PatternBlock.trial==PatternBlock.nTrials) {
+        						RootPanel.get().remove(PatternDisplay.wrapper);
+        					}
         					
         					int corr;
         					

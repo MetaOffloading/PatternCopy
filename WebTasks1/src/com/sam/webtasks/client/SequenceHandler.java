@@ -252,6 +252,7 @@ public class SequenceHandler {
 			case 2:
 				// initialise the block
 				PatternBlock.Init();
+				PatternBlock.block = -1;
 				PatternBlock.practiceMode=true;
 				PatternBlock.Run();
 				break;
@@ -273,6 +274,7 @@ public class SequenceHandler {
 				break;
 			case 4:
 				PatternBlock.Init();
+				PatternBlock.block = -2;
 				PatternBlock.Run();
 				break;
 			case 5:
@@ -306,7 +308,6 @@ public class SequenceHandler {
 					SequenceHandler.SetPosition(SequenceHandler.GetPosition() - 1);
 					PatternTrial.Run();
 				} else {		
-					RootPanel.get().remove(PatternDisplay.wrapper);
 					SequenceHandler.Next();
 				}
 				break;
