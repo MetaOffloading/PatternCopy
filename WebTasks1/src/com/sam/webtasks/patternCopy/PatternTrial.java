@@ -1,13 +1,19 @@
 package com.sam.webtasks.patternCopy;
 
 import java.util.Collections;
+import java.util.Date;
 
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 
 public class PatternTrial {
+	public static Date trialStart;
+	public static int switches, blockMoves;
+	
 	public static void Run() {	
+		
+		
 		PatternDisplay.gridLayer.setVisible(true);
 		PatternDisplay.templateLayer.setVisible(true);
 		PatternDisplay.copyLayer.setVisible(false || PatternBlock.practiceMode);
@@ -54,6 +60,11 @@ public class PatternTrial {
         }
 		
     	PatternDisplay.panel.draw();
+    	
+    	//initialise output variables
+    	trialStart = new Date();
+    	switches = 0;
+        blockMoves = 0;
 	}
 
 }

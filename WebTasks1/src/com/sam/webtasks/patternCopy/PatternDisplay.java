@@ -1,6 +1,7 @@
 package com.sam.webtasks.patternCopy;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
@@ -24,6 +25,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sam.webtasks.basictools.PHP;
 import com.sam.webtasks.client.SequenceHandler;
 
 public class PatternDisplay {
@@ -153,6 +155,8 @@ public class PatternDisplay {
         
         sideSwitchRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
         	public void onNodeMouseClick (NodeMouseClickEvent event) {
+        		PatternTrial.switches++;
+        		
         		if (visiblePanel==TEMPLATE) {
         			copyLayer.setVisible(true);
         			templateLayer.setVisible(false);
@@ -221,12 +225,28 @@ public class PatternDisplay {
         				
         			new Timer() {
         				public void run() {
-        					if (++PatternBlock.trial == PatternBlock.nTrials) {
-        						RootPanel.get().remove(PatternDisplay.wrapper);
-        						SequenceHandler.Next();
+        					PatternBlock.trial++;
+        					
+        					int corr;
+        					
+        					if (PatternBlock.lastRespCorrect) {
+        						corr=1;
         					} else {
-        						PatternTrial.Run();
+        						corr=0;
         					}
+        					
+        					final Date endTime = new Date();
+
+							int duration = (int) (endTime.getTime() - PatternTrial.trialStart.getTime());
+        					
+        					String data = "" + PatternBlock.block + ","
+        							         + PatternBlock.trial + ","
+        							         + corr + "," 
+        									 + PatternTrial.switches + "," 
+        									 + PatternTrial.blockMoves + "," 
+        									 + duration; 
+        					
+        					PHP.logData("PCtrial", data, true);
         				}
         			}.schedule(500);		 
         		} else {
@@ -246,6 +266,8 @@ public class PatternDisplay {
         	//make the copy rectangles snap to the grid
         	copyRectangles[i].addNodeDragEndHandler((NodeDragEndHandler) new NodeDragEndHandler() {
 				public void onNodeDragEnd(NodeDragEndEvent event) {
+					PatternTrial.blockMoves++;
+					
 					int clickedX=(int) copyRectangles[finali].getX();
 					int clickedY=(int) copyRectangles[finali].getY();
 					

@@ -50,6 +50,8 @@ import com.sam.webtasks.iotask2.IOtask2Block;
 import com.sam.webtasks.iotask2.IOtask2BlockContext;
 import com.sam.webtasks.iotask2.IOtask2RunTrial;
 import com.sam.webtasks.patternCopy.PatternBlock;
+import com.sam.webtasks.patternCopy.PatternDisplay;
+import com.sam.webtasks.patternCopy.PatternTrial;
 import com.sam.webtasks.perceptualTask.PerceptBlock;
 import com.sam.webtasks.timeBasedOffloading.TimeBlock;
 import com.sam.webtasks.iotask2.IOtask2InitialiseTrial;
@@ -93,6 +95,18 @@ public class SequenceHandler {
 				}
 				break;
 			case 5:
+				ProgressBar.Hide();
+				// log data and check that it saves
+				String data = TimeStamp.Now() + ",";
+				data = data + SessionInfo.participantID + ",";
+				data = data + Counterbalance.getFactorLevel("FirstTask") + ",";
+				data = data + SessionInfo.gender + ",";
+				data = data + SessionInfo.age;
+
+				PHP.UpdateStatus("finished");
+				PHP.logData("finish", data, true);
+				break;			
+			case 6:
 				ClickPage.Run("You have now completed the experiment, thank you.", "nobutton");
 				break;
 			}
@@ -288,13 +302,22 @@ public class SequenceHandler {
 				PatternBlock.Run();
 				break;
 			case 9:
+				if (PatternBlock.trial != PatternBlock.nTrials) {
+					SequenceHandler.SetPosition(SequenceHandler.GetPosition() - 1);
+					PatternTrial.Run();
+				} else {		
+					RootPanel.get().remove(PatternDisplay.wrapper);
+					SequenceHandler.Next();
+				}
+				break;
+			case 10:
 				String resp = Window.prompt("Thank you. Now that you have finished this task, we would like you to "
 						+ "estimate the average number of times you clicked on the button to switch "
 						+ "between the two grids, when you copied a pattern. Please answer with the average number of times "
 						+ "you clicked on this button each time you copied one pattern.", "");
 				PHP.logData("PCpostdiction",  "" + resp, true);
 				break;			
-			case 10:
+			case 11:
 				SequenceHandler.SetLoop(0, false); // switch to main loop
 				SequenceHandler.Next(); // start the loop
 			}
