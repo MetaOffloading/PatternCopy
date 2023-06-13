@@ -314,8 +314,10 @@ public class SequenceHandler {
 			case 10:
 				String resp = Window.prompt("Thank you. Now that you have finished this task, we would like you to "
 						+ "estimate the average number of times you clicked on the button to switch "
-						+ "between the two grids, when you copied a pattern. Please answer with the average number of times "
-						+ "you clicked on this button each time you copied one pattern.", "");
+						+ "between the two grids, when you copied a pattern. Note that a switch in "
+						+ "either direction would count, so if you moved from the template to the copy, then back "
+						+ "again to the template, this would be two clicks. Please type in the average number "
+						+ "of times you clicked the button each time you copied a pattern.", "");
 				PHP.logData("PCpostdiction",  "" + resp, true);
 				break;			
 			case 11:
