@@ -10,7 +10,7 @@ public class Instructions {
 		 
 		switch(index) {
 		case 0:
-			i = "In this experiment you will have a simple task to do.<br><br>"
+			i = "In this part of the experiment you will have a simple task to do.<br><br>"
 					+ "You will see several yellow circles inside a box. Inside each circle will be a number. <br><br>"
 					+ "You can move them around with your finger or your mouse. Your task is to drag them to the bottom of the box in sequence.<br><br>"
 					+ " Please start by dragging 1 all the way to the bottom. This will make it disappear. <br><br>"

@@ -194,10 +194,10 @@ public class SequenceHandler {
 				block6.offloadCondition = Names.REMINDERS_OPTIONAL;		
 				block6.Run();
 				break;
-			case 15:
+			case 13:
 				ClickPage.Run(Instructions.Get(6), "Next");
 				break;
-			case 16:
+			case 14:
 				//experimental block
 				IOtask1Block block7 = new IOtask1Block();
 				block7.blockNum = 7;
@@ -207,25 +207,25 @@ public class SequenceHandler {
 				block7.offloadCondition = Names.REMINDERS_OPTIONAL;		
 				block7.Run();
 				break;
-			case 17:
+			case 15:
 				Slider.Run("Thank you. You have now finished this task. We would now like you to estimate how often you "
 						+ "used the strategy of placing circles at the edge of the box at the beginning of the "
 						+ "trial, as reminders. 0% "
 						+ "would mean that you never used this strategy. 100% would mean that you used this strategy "
 						+ "for all of the special circles", "Never", "Always");
 				break;
-			case 18:
+			case 16:
 				PHP.logData("IOpostdiction",  "" + Slider.getSliderValue(), true);
 				break;
-			case 19:
+			case 17:
 				Slider.Run("Please tell us how confident you are about the estimate you gave on the last"
 						+ " screen. 0% would mean that it was a completely random guess. "
 						+ "100% would mean that you are absolutely certain that you were exactly correct.", "Guess", "Exactly correct");
 				break;
-			case 20:
+			case 18:
 				PHP.logData("IOpostdictionConfidence", "" + Slider.getSliderValue(), true);
 				break;
-			case 21:
+			case 19:
 				SequenceHandler.SetLoop(0, false); // switch to main loop
 				SequenceHandler.Next(); // start the loop
 			}
