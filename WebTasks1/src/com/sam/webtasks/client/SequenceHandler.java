@@ -169,41 +169,28 @@ public class SequenceHandler {
 				block4.Run();
 				break;		
 			case 9:
-				ClickPage.Run(Instructions.Get(4), "Next");
-				break;
-			case 10:
-				//practice 5: 10 circles, 3 targets, interruption
-				IOtask1Block block5 = new IOtask1Block();
-				block5.blockNum = 5;
-				block5.nTrials = 1;
-				block5.nTargets = 3;
-				block5.askArithmetic = true;
-				block5.offloadCondition = Names.REMINDERS_NOTALLOWED;		
-				block5.Run();
-				break;
-			case 11:
 				// Metacognitive Judgement
 				Slider.Run("Now that you have had some practice, we would like you to tell us "
 						+ "how accurately you can perform the task, when it is the same as the version you "
-						+ "just practiced with the arithmetic question. Please use the scale below to indicate what percentage "
+						+ "just practiced with three special circles to remember. Please use the scale below to indicate what percentage "
 						+ "of the special circles you can correctly remember to drag to the instructed side of the square, on average. "
 						+ "100% would mean that you always get every single one correct. 0% would mean that you can "
 						+ "never get any of them correct. ", "Never", "Always");
 				break;
-			case 12:
+			case 10:
 				//save the selected slider value to the database
 				PHP.logData("IOprediction",  "" + Slider.getSliderValue(), true);
 				break;
-			case 13:
+			case 11:
 				ClickPage.Run(Instructions.Get(5), "Next");
 				break;
-			case 14:
-				//practice 6: 10 circles, 3 targets, interruption, offloading allowed
+			case 12:
+				//practice 6: 10 circles, 3 targets, offloading allowed
 				IOtask1Block block6 = new IOtask1Block();
 				block6.blockNum = 6;
 				block6.nTrials = 1;
 				block6.nTargets = 3;
-				block6.askArithmetic = true;
+				block6.askArithmetic = false;
 				block6.offloadCondition = Names.REMINDERS_OPTIONAL;		
 				block6.Run();
 				break;
@@ -211,12 +198,12 @@ public class SequenceHandler {
 				ClickPage.Run(Instructions.Get(6), "Next");
 				break;
 			case 16:
-				//practice 6: 10 circles, 3 targets, interruption, offloading allowed
+				//experimental block
 				IOtask1Block block7 = new IOtask1Block();
 				block7.blockNum = 7;
 				block7.nTrials = 10;
 				block7.nTargets = 3;
-				block7.askArithmetic = true;
+				block7.askArithmetic = false;
 				block7.offloadCondition = Names.REMINDERS_OPTIONAL;		
 				block7.Run();
 				break;
@@ -231,6 +218,14 @@ public class SequenceHandler {
 				PHP.logData("IOpostdiction",  "" + Slider.getSliderValue(), true);
 				break;
 			case 19:
+				Slider.Run("Please tell us how confident you are about the estimate you gave on the last"
+						+ " screen. 0% would mean that it was a completely random guess. "
+						+ "100% would mean that you are absolutely certain that you were exactly correct.", "Guess", "Exactly correct");
+				break;
+			case 20:
+				PHP.logData("IOpostdictionConfidence", "" + Slider.getSliderValue(), true);
+				break;
+			case 21:
 				SequenceHandler.SetLoop(0, false); // switch to main loop
 				SequenceHandler.Next(); // start the loop
 			}
@@ -321,6 +316,14 @@ public class SequenceHandler {
 				PHP.logData("PCpostdiction",  "" + resp, true);
 				break;			
 			case 11:
+				Slider.Run("Please tell us how confident you are about the estimate you gave on the last"
+						+ " screen. 0% would mean that it was a completely random guess. "
+						+ "100% would mean that you are absolutely certain that you were exactly correct.", "Guess", "Exactly correct");
+				break;
+			case 12:
+				PHP.logData("PCpostdictionConfidence", "" + Slider.getSliderValue(), true);
+				break;
+			case 13:
 				SequenceHandler.SetLoop(0, false); // switch to main loop
 				SequenceHandler.Next(); // start the loop
 			}

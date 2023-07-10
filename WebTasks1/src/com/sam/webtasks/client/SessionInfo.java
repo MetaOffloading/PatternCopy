@@ -8,7 +8,7 @@ public class SessionInfo {
 	/*******************************************************/
 		
 	//are we just testing locally? set this to true if so and it won't try to log data to the database
-	public static boolean localTesting=false;
+	public static boolean localTesting=true;
 	public static boolean runInfoConsentPages=false; //should we do the info and consent pages?
 	public static int experimentType = Names.EXPERIMENT_STANDALONE;
 	
@@ -16,7 +16,7 @@ public class SessionInfo {
 	public static String experimentCode="OS1";
 	
 	//which version of the experiment is this?
-	public static int experimentVersion=2;
+	public static int experimentVersion=3;
 	
 	//what is the minimum permitted screen size in pixels?
 	//if the screen is smaller than this the participant will be asked
@@ -41,7 +41,7 @@ public class SessionInfo {
 	//NB levels range from 0 to (maximum - 1)
 	public static String[] counterbalanceFactors = {"FirstTask"};
 	public static int[] counterbalanceLevels = {2};
-	public static int[] specifiedLevels = {-1};
+	public static int[] specifiedLevels = {1};
 	
 	/*************************************************/
     /* no need to edit the settings below this point */

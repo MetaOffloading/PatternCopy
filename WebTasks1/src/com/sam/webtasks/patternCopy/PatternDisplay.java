@@ -8,6 +8,8 @@ import com.ait.lienzo.client.core.event.NodeDragEndEvent;
 import com.ait.lienzo.client.core.event.NodeDragEndHandler;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
+import com.ait.lienzo.client.core.event.NodeTouchStartEvent;
+import com.ait.lienzo.client.core.event.NodeTouchStartHandler;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Line;
@@ -153,6 +155,28 @@ public class PatternDisplay {
         sideSwitchGroup.setX(1.5*gridPixels*gridSize-rectX/2);
         sideSwitchGroup.setY(0.333*gridPixels*gridSize);
         
+        sideSwitchRectangle.addNodeTouchStartHandler(new NodeTouchStartHandler() {
+        	public void onNodeTouchStart (NodeTouchStartEvent event) {
+        		PatternTrial.switches++;
+        		
+        		if (visiblePanel==TEMPLATE) {
+        			copyLayer.setVisible(true);
+        			templateLayer.setVisible(false);
+        			sideSwitchText.setText("Show Template");
+        			copyLayer.draw();
+        			gridLayer.draw();
+        			visiblePanel=COPY;
+        		} else {
+        			templateLayer.setVisible(true);
+        			copyLayer.setVisible(false);
+        			sideSwitchText.setText("Show Copy");
+        			templateLayer.draw();
+        			gridLayer.draw();
+        			visiblePanel=TEMPLATE;
+        		}
+        	}
+        });
+        
         sideSwitchRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
         	public void onNodeMouseClick (NodeMouseClickEvent event) {
         		PatternTrial.switches++;
@@ -190,6 +214,72 @@ public class PatternDisplay {
         finishGroup.setX(1.5*gridPixels*gridSize-rectX/2);
         finishGroup.setY(0.666*gridPixels*gridSize);
         
+        
+        finishRectangle.addNodeTouchStartHandler(new NodeTouchStartHandler() {
+        	public void onNodeTouchStart (NodeTouchStartEvent event) {
+        		//if (allSquaresPlaced) {
+        		if (true) {
+        			//check if correct
+        			Boolean allCorrect=true;
+        			
+        			for (int i=0; i<nFilledSquares; i++) {
+        				if (allCopySquares.get(i) != allSquares.get(i)) {
+        					allCorrect=false;	
+              			} 
+        			}
+        			
+        			if (allCorrect) {
+        				PatternBlock.nCorrect++;
+        				PatternBlock.lastRespCorrect=true;
+        			}  else {
+        				PatternBlock.lastRespCorrect=false;
+        			}
+        					
+        			gridLayer.setVisible(false);
+        			templateLayer.setVisible(false);
+        			copyLayer.setVisible(false);
+        					
+        			//reset the button text
+        			sideSwitchText.setText("Show Copy");
+        				
+        			//reset the initial copy squares
+        			for (int i=0; i<nFilledSquares; i++) {
+        				allCopySquares.set(i, i);
+        			}
+        				
+        			new Timer() {
+        				public void run() {
+        					if(++PatternBlock.trial==PatternBlock.nTrials) {
+        						RootPanel.get().remove(PatternDisplay.wrapper);
+        					}
+        					
+        					int corr;
+        					
+        					if (PatternBlock.lastRespCorrect) {
+        						corr=1;
+        					} else {
+        						corr=0;
+        					}
+        					
+        					final Date endTime = new Date();
+
+							int duration = (int) (endTime.getTime() - PatternTrial.trialStart.getTime());
+        					
+        					String data = "" + PatternBlock.block + ","
+        							         + PatternBlock.trial + ","
+        							         + corr + "," 
+        									 + PatternTrial.switches + "," 
+        									 + PatternTrial.blockMoves + "," 
+        									 + duration; 
+        					
+        					PHP.logData("PCtrial", data, true);
+        				}
+        			}.schedule(500);		 
+        		} else {
+        			Window.alert("You need to move all of the colour blocks into the grid first.");
+        		}
+        	}
+        });
         
         finishRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
         	public void onNodeMouseClick (NodeMouseClickEvent event) {
