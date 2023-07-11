@@ -34,6 +34,9 @@ public class IOtask1Block {
 	//should target feedback be shown, i.e. green for correct target response, red for incorrect
 	public boolean showTargetFeedback=true;
 	
+	//increment progress bar after each trial?
+    public boolean incrementProgress=false;
+	
 	//set up targets
 	public int nTargets=1;               //number of targets
 	

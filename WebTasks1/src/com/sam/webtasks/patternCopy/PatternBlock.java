@@ -28,6 +28,9 @@ public class PatternBlock {
 	//in practice mode, you can see both the template and copy together
 	public static Boolean practiceMode = false;
 	
+	//increment the progress bar after each trial?
+	public static Boolean incrementProgress = false;
+	
 	/*-----------initialise / reset all block settings-----------*/
 	public static void Init() {
 		if (!PatternDisplay.isInitialised) {

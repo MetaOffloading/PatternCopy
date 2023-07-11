@@ -19,9 +19,9 @@
 //continuing from where we left off.
 
 //TODO:
-//scroll
-//data output
-//resume where you left off
+//progress bar?
+//finish button
+//info sheet
 
 package com.sam.webtasks.client;
 
@@ -71,8 +71,15 @@ public class SequenceHandler {
 			case 1:
 				ClickPage.Run("Thank you for taking part. This experiment is divided into two halves.<br><br>"
 						+ "Click below to start the first part of the experiment.", "Next");
-				break;
+				break;	
 			case 2:
+				ProgressBar.Initialise();
+				ProgressBar.Show();
+				ProgressBar.SetProgress(0, 20);
+				
+				SequenceHandler.Next();
+				break;
+			case 3:
 				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.INTENTION_OFFLOADING) {
 					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
 					SequenceHandler.Next();
@@ -80,12 +87,13 @@ public class SequenceHandler {
 					SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
 					SequenceHandler.Next();
 				}
+				
 				break;
-			case 3:
+			case 4:
 				ClickPage.Run("Thank you, you have now finished the first half of the experiment.<br><br>"
 						+ "Click below to continue.", "Next");
 				break;
-			case 4:
+			case 5:
 				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.PATTERN_COPY) {
 					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
 					SequenceHandler.Next();
@@ -94,8 +102,7 @@ public class SequenceHandler {
 					SequenceHandler.Next();
 				}
 				break;
-			case 5:
-				ProgressBar.Hide();
+			case 6:
 				// log data and check that it saves
 				String data = TimeStamp.Now() + ",";
 				data = data + SessionInfo.participantID + ",";
@@ -106,8 +113,10 @@ public class SequenceHandler {
 				PHP.UpdateStatus("finished");
 				PHP.logData("finish", data, true);
 				break;			
-			case 6:
-				ClickPage.Run("You have now completed the experiment, thank you.", "nobutton");
+			case 7:
+				ProgressBar.Hide();
+				
+				ClickPage.Run(Instructions.Get(7), "nobutton");
 				break;
 			}
 			break;
@@ -204,6 +213,7 @@ public class SequenceHandler {
 				block7.nTrials = 10;
 				block7.nTargets = 3;
 				block7.askArithmetic = false;
+				block7.incrementProgress = true;
 				block7.offloadCondition = Names.REMINDERS_OPTIONAL;		
 				block7.Run();
 				break;
@@ -294,6 +304,7 @@ public class SequenceHandler {
 				break;
 			case 8:
 				PatternBlock.Init();
+				PatternBlock.incrementProgress=true;
 				PatternBlock.block=1;
 				PatternBlock.nTrials=10;
 				PatternBlock.Run();

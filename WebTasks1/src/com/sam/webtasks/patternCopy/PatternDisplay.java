@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sam.webtasks.basictools.PHP;
+import com.sam.webtasks.basictools.ProgressBar;
 import com.sam.webtasks.client.SequenceHandler;
 
 public class PatternDisplay {
@@ -217,8 +218,7 @@ public class PatternDisplay {
         
         finishRectangle.addNodeTouchStartHandler(new NodeTouchStartHandler() {
         	public void onNodeTouchStart (NodeTouchStartEvent event) {
-        		//if (allSquaresPlaced) {
-        		if (true) {
+        		if (allSquaresPlaced) {
         			//check if correct
         			Boolean allCorrect=true;
         			
@@ -249,6 +249,10 @@ public class PatternDisplay {
         				
         			new Timer() {
         				public void run() {
+        					if (PatternBlock.incrementProgress) {
+        						ProgressBar.Increment();
+        					}
+        					
         					if(++PatternBlock.trial==PatternBlock.nTrials) {
         						RootPanel.get().remove(PatternDisplay.wrapper);
         					}
@@ -283,8 +287,7 @@ public class PatternDisplay {
         
         finishRectangle.addNodeMouseClickHandler(new NodeMouseClickHandler() {
         	public void onNodeMouseClick (NodeMouseClickEvent event) {
-        		//if (allSquaresPlaced) {
-        		if (true) {
+        		if (allSquaresPlaced) {
         			//check if correct
         			Boolean allCorrect=true;
         			
@@ -315,6 +318,10 @@ public class PatternDisplay {
         				
         			new Timer() {
         				public void run() {
+        					if (PatternBlock.incrementProgress) {
+        						ProgressBar.Increment();
+        					}
+        					
         					if(++PatternBlock.trial==PatternBlock.nTrials) {
         						RootPanel.get().remove(PatternDisplay.wrapper);
         					}

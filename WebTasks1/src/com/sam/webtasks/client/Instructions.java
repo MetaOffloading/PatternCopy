@@ -58,6 +58,12 @@ public class Instructions {
 					+ "You should feel free to do the task however you prefer. It's completely up to you.<br><br> "
 					+ "Please click below to continue. ";
 			break;
+			
+		case 7:
+			i = "You have now completed the experiment. Thank you for taking part.<br><br>"
+					+ "Please click on the link below to receive your payment:<br><br>"
+					+ "<b><a href=\"https://app.prolific.co/submissions/complete?cc=C1I2CPC5\">"
+					+ "CLICK HERE</a></b>";
 		}
 
 		return(i);	
@@ -98,7 +104,7 @@ public class Instructions {
                 + "We aim to publish the results of this project in scientific journals and book chapters. Copies of the "
                 + "results can either be obtained directly from the scientific journals' websites or from us.<br><br>"
                 + "Should you wish to raise a complaint, please contact the Principal Investigator of this project, "
-                + "Dr Sam Gilbert (<a href=\"mailto:sam.gilbert@ucl.ac.uk\">sam.gilbert@ucl.ac.uk</a>). However, "
+                + "Professor Sam Gilbert (<a href=\"mailto:sam.gilbert@ucl.ac.uk\">sam.gilbert@ucl.ac.uk</a>). However, "
                 + "if you feel your complaint has not been handled to your satisfaction, please be aware that you can "
                 + "also contact the Chair of the UCL Research Ethics Committee (<a href=\"mailto:ethics@ucl.ac.uk\">ethics@ucl.ac.uk</a>).");
     }

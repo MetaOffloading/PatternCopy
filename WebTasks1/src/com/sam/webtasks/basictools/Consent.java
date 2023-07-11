@@ -41,8 +41,9 @@ public class Consent {
         final VerticalPanel screenPanel = new VerticalPanel();   //used to align elements to centre of screen
         final VerticalPanel checkBoxPanel = new VerticalPanel();
         final VerticalPanel namePanel = new VerticalPanel();
-        final VerticalPanel emailPanel = new VerticalPanel();
+//        final VerticalPanel emailPanel = new VerticalPanel();
         final VerticalPanel agePanel = new VerticalPanel();
+        final VerticalPanel eduPanel = new VerticalPanel();
         final VerticalPanel genderPanel = new VerticalPanel();
         final HorizontalPanel buttonPanel = new HorizontalPanel();
         final Button backButton = new Button("Go back to information page");
@@ -52,7 +53,9 @@ public class Consent {
         final Label genderLabel = new Label("Are you: ");
         final RadioButton maleRadioButton = new RadioButton("gender", "male");
         final RadioButton femaleRadioButton = new RadioButton("gender", "female");
-        final RadioButton otherRadioButton = new RadioButton("gender", "other");
+        final RadioButton otherRadioButton = new RadioButton("gender", "prefer to self-describe:");
+          		
+        final TextBox genderBox = new TextBox();
         final Label projectTitleText = new Label();
         final HTML approvalHTML = new HTML();
         final HTML bodyHTML = new HTML();
@@ -131,11 +134,13 @@ public class Consent {
         genderPanel.add(maleRadioButton);
         genderPanel.add(femaleRadioButton);
         genderPanel.add(otherRadioButton);
+        genderPanel.add(genderBox);
 
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
         checkBoxPanel.setStyleName("bottomMarginSmall");
         ageBox.setStyleName("bottomMarginSmall");
+        genderBox.setStyleName("bottomMarginSmall");
 
         buttonPanel.add(backButton);
         buttonPanel.add(agreeButton);
@@ -155,6 +160,7 @@ public class Consent {
         //mainPanel.add(emailPanel);
         mainPanel.add(agePanel);
         mainPanel.add(genderPanel);
+        mainPanel.add(eduPanel);
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.add(buttonPanel);
 
@@ -178,7 +184,7 @@ public class Consent {
 
         agreeButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                int boxesTicked = 0, validAge = 1, validGender = 0;
+                int boxesTicked = 0, validAge = 1, validGender = 0, validEdu = 0;
                 String alertString = "";
 
                 if (ageBox.getText().length() < 2) {
@@ -194,6 +200,7 @@ public class Consent {
                 if (otherRadioButton.getValue()) {
                     validGender++;
                 }
+                       
 
                 if (box1.getValue()) {
                     boxesTicked++;
@@ -226,9 +233,10 @@ public class Consent {
                 	if (otherRadioButton.getValue()) {
                 		SessionInfo.gender=Names.GENDER_OTHER;
                 	}
+                	 	
                 	
                     SessionInfo.age = Integer.parseInt(ageBox.getText());
-                	
+                    
                     String data=""+SessionInfo.gender+","+SessionInfo.age+","+Counterbalance.getCounterbalancingCell();
              
                     RootPanel.get().remove(scrollPanel);
@@ -248,9 +256,9 @@ public class Consent {
                     }
 
                     if (validGender == 0) {
-                        alertString = alertString + "Please indicate your gender";
+                        alertString = alertString + "Please indicate your gender\n";
                     }
-
+                    
                     Window.alert(alertString);
                 }
             }
@@ -261,6 +269,7 @@ public class Consent {
         RootPanel.get().add(scrollPanel);
         
         ageBox.setWidth(ageBoxLabel.getOffsetWidth() + "px");
+        genderBox.setWidth(ageBoxLabel.getOffsetWidth() + "px");
         emailTextBox.setWidth((printText.getOffsetWidth() - 5) + "px");
     }
 

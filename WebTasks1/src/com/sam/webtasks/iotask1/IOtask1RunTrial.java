@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sam.webtasks.basictools.Names;
 import com.sam.webtasks.basictools.PHP;
+import com.sam.webtasks.basictools.ProgressBar;
 import com.sam.webtasks.basictools.TimeStamp;
 import com.sam.webtasks.client.SequenceHandler;
 
@@ -434,6 +435,11 @@ public class IOtask1RunTrial {
 								if (IOtask1BlockContext.allCirclesRemoved()) { // end of trial
 									new Timer() {
 										public void run() {
+											
+											if (block.incrementProgress) {
+												ProgressBar.Increment();
+											}
+											
 											RootPanel.get().remove(verticalPanel);
 											IOtask1BlockContext.incrementTrialNumber();
 
