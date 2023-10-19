@@ -69,54 +69,11 @@ public class SequenceHandler {
 			 * The code here defines the main sequence of events in the experiment *
 			 **********************************************************************/
 			case 1:
-				ClickPage.Run("Thank you for taking part. This experiment is divided into two halves.<br><br>"
-						+ "Click below to start the first part of the experiment.", "Next");
-				break;	
-			case 2:
-				ProgressBar.Initialise();
-				ProgressBar.Show();
-				ProgressBar.SetProgress(0, 20);
-				
+				SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
 				SequenceHandler.Next();
 				break;
-			case 3:
-				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.INTENTION_OFFLOADING) {
-					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
-					SequenceHandler.Next();
-				} else {
-					SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
-					SequenceHandler.Next();
-				}
-				
-				break;
-			case 4:
-				ClickPage.Run("Thank you, you have now finished the first half of the experiment.<br><br>"
-						+ "Click below to continue.", "Next");
-				break;
-			case 5:
-				if (Counterbalance.getFactorLevel("FirstTask") == ExtraNames.PATTERN_COPY) {
-					SequenceHandler.SetLoop(4, true); // switch to intention offloading loop
-					SequenceHandler.Next();
-				} else {
-					SequenceHandler.SetLoop(5, true); // switch to pattern copy loop
-					SequenceHandler.Next();
-				}
-				break;
-			case 6:
-				// log data and check that it saves
-				String data = TimeStamp.Now() + ",";
-				data = data + SessionInfo.participantID + ",";
-				data = data + Counterbalance.getFactorLevel("FirstTask") + ",";
-				data = data + SessionInfo.gender + ",";
-				data = data + SessionInfo.age;
-
-				PHP.UpdateStatus("finished");
-				PHP.logData("finish", data, true);
-				break;			
-			case 7:
-				ProgressBar.Hide();
-				
-				ClickPage.Run(Instructions.Get(7), "nobutton");
+			case 2:
+				ClickPage.Run("You have now finished", "nobutton");
 				break;
 			}
 			break;
@@ -318,12 +275,17 @@ public class SequenceHandler {
 				}
 				break;
 			case 10:
-				String resp = Window.prompt("Thank you. Now that you have finished this task, we would like you to "
+				String resp = "";
+				
+				while (resp == "") {
+					resp = Window.prompt("Thank you. Now that you have finished this task, we would like you to "
 						+ "estimate the average number of times you clicked on the button to switch "
 						+ "between the two grids, when you copied a pattern. Note that a switch in "
 						+ "either direction would count, so if you moved from the template to the copy, then back "
 						+ "again to the template, this would be two clicks. Please type in the average number "
 						+ "of times you clicked the button each time you copied a pattern.", "");
+				}
+				
 				PHP.logData("PCpostdiction",  "" + resp, true);
 				break;			
 			case 11:
